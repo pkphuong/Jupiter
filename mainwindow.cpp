@@ -26,7 +26,8 @@ short                       mousePointerX,mousePointerY,mouseX,mouseY;
 bool                        isDraging = false;
 bool                        isScaleChanged =true;
 float                       mScale;
-
+QGraphicsScene* scene;
+jViewPort* view;
 CConfig         config;
 QStringList     warningList;
 short selected_target_index;
@@ -676,7 +677,7 @@ void Mainwindow::DrawMap()
                 //printf("toa do hien tai lat %f long %f\n",m_textList[i].m_Lat,m_textList[i].m_Long);
         }
     }
-
+    //view->setMap(pMap);
 }
 void Mainwindow::DrawGrid(QPainter* p,short centerX,short centerY)
 {
@@ -737,16 +738,17 @@ void Mainwindow::DrawGrid(QPainter* p,short centerX,short centerY)
 
 
 }
-QGraphicsScene* scene;
-jViewPort* view;
+
 void Mainwindow::initGraphicView()
 {
     scene = new QGraphicsScene(-200, -200, 400, 400);
     view = new jViewPort(scene,this);
+    view->setGeometry(SCR_LEFT_MARGIN,0,SCR_H,SCR_H);
+    view->lower();
     view->setRenderHint(QPainter::Antialiasing);
-    view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    //view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     view->setBackgroundBrush(Qt::transparent);
-    view->setGeometry(SCR_LEFT_MARGIN,0,200,200);
+
 }
 
 void Mainwindow::DrawRadarTargetByPainter(QPainter* p)//draw radar target from processing->radarData->mTrackList
@@ -1194,7 +1196,7 @@ void Mainwindow::SaveBinFile()
 void Mainwindow::InitSetting()
 {
     setMouseTracking(true);
-    //initGraphicView();
+    initGraphicView();
     //init the guard zone
     gz1.isActive = 0;
     gz2.isActive = 0;
@@ -1246,7 +1248,7 @@ void Mainwindow::InitSetting()
         pMap = new QPixmap(height(),height());
 
         DrawMap();
-        //view->setMap(pMap);
+
     }else
     {
         vnmap.ClearData();

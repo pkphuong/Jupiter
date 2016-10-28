@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     CPoints.cpp \
     CDefine.cpp \
     jtarget.cpp \
-    jviewport.cpp
+    jviewport.cpp \
+    jgraphictarget.cpp
 HEADERS  += mainwindow.h \
     vnmap.h \
     Config.h \
@@ -60,7 +61,8 @@ HEADERS  += mainwindow.h \
     CPoints.h \
     CDefine.h \
     jtarget.h \
-    jviewport.h
+    jviewport.h \
+    jgraphictarget.h
 
 FORMS    += mainwindow.ui \
     gpsdialog.ui \

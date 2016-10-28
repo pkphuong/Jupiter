@@ -10,9 +10,8 @@ class jViewPort : public QGraphicsView
 public:
     jViewPort(QGraphicsScene *scene, QWidget *parent = 0);
     jViewPort();
-    void setMap(QPixmap *map);
 private:
-    QPixmap *pMap;
+    QGraphicsPixmapItem *pMap;
     short   dxMap,dyMap;
     short   dx,dy;
     short   mouseX, mouseY;
@@ -22,8 +21,7 @@ protected:
     void hoverEnter(QHoverEvent *event);
     void hoverLeave(QHoverEvent *event);
     void hoverMove(QHoverEvent *event);
-    //bool event(QEvent *event);
-    void paintEvent(QPaintEvent *event);
+
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *e);

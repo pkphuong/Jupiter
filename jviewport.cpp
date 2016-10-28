@@ -5,11 +5,13 @@
 
 jViewPort::jViewPort()
 {
+    setStyleSheet("background: transparent");
 
 }
 
 jViewPort::jViewPort(QGraphicsScene *scene, QWidget *parent):QGraphicsView(scene,parent )
 {
+    setStyleSheet("background: transparent; border: noborder");
     pMap = NULL;
     dxMap = 0;
     dyMap = 0;
@@ -32,25 +34,8 @@ void jViewPort::hoverMove(QHoverEvent *event)
 }
 
 
-void jViewPort::setMap(QPixmap *map)
-{
-    this->pMap = map;
-}
-void jViewPort::paintEvent(QPaintEvent *event)
-{
-    //return;
-    QPainter p(this);
-    p.drawText(10,10, "name");
-    //p.drawLine(0,0,100,100);
-//    if(pMap)
-//    {
-//        p.drawPixmap(0,0,height(),height(),
-//                         *pMap,
-//                         dxMap,dyMap,height(),height());
-//        //printf("ff");
-//    }
-    QGraphicsView::paintEvent(event);
-}
+
+
 void jViewPort::mousePressEvent(QMouseEvent *event)
 {
     //if(event->x()>scrCtX+scrCtY)return;
