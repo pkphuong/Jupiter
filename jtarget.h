@@ -7,7 +7,7 @@ class JTarget
 public:
     JTarget();
     double mLat;
-    double mLong;
+    double mLon;
     double heading;
     double speed;
 

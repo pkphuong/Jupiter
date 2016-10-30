@@ -90,7 +90,6 @@ void track_t::init(object_t *object)
     rotA_r = 0;
     speed = 0;
     heading = 0;
-    heading = 0;
     isConfirmed = false;
     isProcessed = true;
     isTracking = false;
@@ -857,17 +856,15 @@ void C_radar_data::ProcessData(unsigned short azi)
 
             }
             if(filter2of3)cutoff = data_mem.hot_disp[azi][r_pos]<2;
-            //            if(cutoff)
-            //            {
-            //                data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
+            if(cutoff)
+            {
+                data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
 
-            //            }else
-            //            {
-            //                data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
-
-            //            }
+            }else
+            {
+                data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
+            }
             data_mem.level_disp[azi][r_pos] = cutoff?0:data_mem.level[azi][r_pos];
-
 
         }
         else
@@ -913,7 +910,7 @@ void C_radar_data::ProcessData(unsigned short azi)
             rainLevel += 0.4f*(data_mem.level[azi][r_pos]-rainLevel);
         }
         if(rainLevel>(noiseAverage+9*noiseVar))rainLevel = noiseAverage + 9*noiseVar;
-        thresh = rainLevel + noiseVar*3;//kgain = 3
+        thresh = rainLevel + noiseVar*4;//kgain = 3
         bool cutoff = data_mem.level[azi][r_pos]<thresh;
         //            short dvar;
         //            dvar = abs(data_mem.dopler[azi][r_pos]-data_mem.dopler_old[azi][r_pos]);
@@ -933,36 +930,13 @@ void C_radar_data::ProcessData(unsigned short azi)
                 data_mem.hot[azi][r_pos]++;
             }
         }
-
-
-
-        /*if(data_mem.hot[azi][r_pos]>1)
-        {
-            cutoff = false;
-        }
-        else
-            if(!cutoff)
-        {
-            if(r_pos>1)
-            {
-                if((data_mem.hot[azi][r_pos+1])>1||(data_mem.hot[azi][r_pos-1]>1))
-                {
-                    cutoff = false;
-                    data_mem.hot[azi][r_pos] = 2;
-                }
-                else cutoff = true;
-
-            }
-            else cutoff = true;
-        }
-        else cutoff = true;*/
         if(this->filter2of3)
         {
             if(!cutoff)
             {
-                if((data_mem.hot[azi][r_pos+1])<1
-                  &&data_mem.hot[azi][r_pos-1]<1
-                  &&data_mem.hot[azi][r_pos]<1)
+                if((data_mem.hot[azi][r_pos+1])<2
+                  &&data_mem.hot[azi][r_pos-1]<2
+                  &&data_mem.hot[azi][r_pos]<2)
                 {
                     cutoff = true;
                 }
@@ -971,11 +945,11 @@ void C_radar_data::ProcessData(unsigned short azi)
         if(cutoff)
         {
             if(isManualTune&&rgs_auto)data_mem.level_disp[azi][r_pos]= 0;
-            data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
+            //data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
         }
         else
         {
-            data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
+            //data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
         }
 
 
@@ -1313,13 +1287,14 @@ void C_radar_data::procTracks(unsigned short curA)
 
 
 }
-void C_radar_data::getPolar(float x,float y,float *azi,float *range)
+void C_radar_data::kmxyToPolar(float x,float y,float *azi,float *range)
 {
-    //x*=scale_ppi
-    *azi = atanf(x/y);//tinh azi theo chuan bac thuan kim dong ho
+    *azi = atanf(x/y);
     if(y<0)*azi+=PI;
-    if(azi<0)*azi += PI_NHAN2;
+    if(*azi<0)*azi += PI_NHAN2;
     *range = sqrt(x*x+y*y);
+    *azi = *azi*DEG_RAD;
+    *range = *range/CONST_NM;
 }
 void C_radar_data::addTrackManual(float x,float y)
 {

@@ -77,7 +77,7 @@ private:
 //    QUdpSocket      *udpARPA;//ARPA
     QUdpSocket      *m_udpSocket;//socket for radar control
     C2_Local          m_CLocal;
-    C2_TrackLst m_trackList;
+    C2_TrackLst m_AISList;
     //
     //CConfig         m_config;
     //CpView  *       m_view;
@@ -280,6 +280,7 @@ private slots:
 private:
     void initActionsConnections();
     void initGraphicView();
+    void updateTargetInfo();
 };
 
 #endif // MAINWINDOW_H

@@ -15,6 +15,10 @@
 #define MIN_TERRAIN                 10
 #define TRACK_CONFIRMED_SIZE        3
 #define TRACK_INIT_STATE            3
+#define DEG_RAD 57.295779513
+#ifndef CONST_NM
+    #define CONST_NM 1.852f// he so chuyen doi tu km sang hai ly
+#endif
 #define PI_NHAN2                    6.2831853072f
 #define PI_CHIA2                    1.5707963268f
 #ifndef PI
@@ -255,7 +259,7 @@ public:
 //    void        blackLine(short x0, short y0, short x1, short y1);
     void        addTrackManual(float x, float y);
     void        addTrack(object_t *mObject);
-    void        getPolar(float x,float y,float *azi,float *range);
+    static    void        kmxyToPolar(float x,float y,float *azi,float *range);
     void        setTrueN(float trueN_deg){
 
         while(trueN_deg<0)trueN_deg+=360;
