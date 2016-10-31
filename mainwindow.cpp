@@ -1076,7 +1076,7 @@ void Mainwindow::paintEvent(QPaintEvent *event)
 //    p.drawText(mousePointerX+5,mousePointerY+5,100,20,0,QString::number(range,'f',2,4)+"|"+QString::number(azi,'f',2,4),0);
 
     ui->label_cursor_range->setText(QString::number(rg,'f',2)+"Nm");
-    ui->label_cursor_azi->setText(QString::number(azi,'f',2)+"\xB0");
+    ui->label_cursor_azi->setText(QString::number((short)azi)+"\xB0"+QString::number((azi - (short)azi)*60,'f',2)+"'");
     ui->label_cursor_lat->setText(QString::number( (short)y2lat(-(y - scrCtY+dy)))+"\xB0"+
                                   QString::number(((float)y2lat(-(y - scrCtY+dy))-(short)(y2lat(-(y - scrCtY+dy))))*60,'f',2)+"'N");
     ui->label_cursor_long->setText(QString::number( (short)x2lon(x - scrCtX+dx))+"\xB0"+
@@ -1648,14 +1648,16 @@ void Mainwindow::updateTargetInfo()
             if(selectedTargetIndex == trackId)
             {
                 //printf("\ntrackId:%d",trackId);
+                double mLat,mLon;
+                vnmap.ConvKmXYToWGS(trackListPt->at(trackId).estX*processing->radarData->scale_ppi/mScale,trackListPt->at(trackId).estY*processing->radarData->scale_ppi/mScale,&mLon,&mLat);
                 ui->label_data_id->setText(QString::number(trackListPt->at(trackId).idCount));
                 float tmpazi = trackListPt->at(trackId).estA*DEG_RAD;
                 if(tmpazi<0)tmpazi+=360;
                 ui->label_data_type->setText("Radar");
                 ui->label_data_range->setText(QString::number(trackListPt->at(trackId).estR*processing->radarData->scale_ppi/mScale/1.852f,'f',2)+"Nm");
                 ui->label_data_azi->setText( QString::number(tmpazi,'f',2)+"\xB0");
-                ui->label_data_lat->setText( QString::number((short)trackListPt->at(trackId).mLat)+"\xB0"+QString::number((trackListPt->at(trackId).mLat-(short)trackListPt->at(trackId).mLat)*60,'f',2)+"'N");
-                ui->label_data_long->setText(QString::number((short)trackListPt->at(trackId).mLon)+"\xB0"+QString::number((trackListPt->at(trackId).mLon-(short)trackListPt->at(trackId).mLon)*60,'f',2)+"'E");
+                ui->label_data_lat->setText( QString::number((short)mLat)+"\xB0"+QString::number((mLat-(short)mLat)*60,'f',2)+"'N");
+                ui->label_data_long->setText(QString::number((short)mLon)+"\xB0"+QString::number((mLon-(short)mLon)*60,'f',2)+"'E");
                 ui->label_data_speed->setText(QString::number(trackListPt->at(trackId).speed,'f',2)+"Kn");
                 ui->label_data_heading->setText(QString::number(trackListPt->at(trackId).heading*DEG_RAD)+"\xB0");
                 ui->label_data_dopler->setText(QString::number(trackListPt->at(trackId).dopler));

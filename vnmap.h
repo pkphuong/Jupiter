@@ -47,7 +47,7 @@ public:
     //void OpenShpFile(const char* filename, short layerIndex);
     void setUp(float ctLat, float ctLong,unsigned short size,const char* fileName);
     void ConvWGSToKmXY(double *x, double *y, double m_Long, double m_Lat);
-    void ConvScrToDeg(float* x, float *y, float *m_Long, float *m_Lat);
+    void ConvKmXYToWGS(double x, double y, double *m_Long, double *m_Lat);
     void LoadPlaces(const char* fileName);
     void LoadBinFile(const char* fileName);
     void ClearData();

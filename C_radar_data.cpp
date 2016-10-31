@@ -856,14 +856,14 @@ void C_radar_data::ProcessData(unsigned short azi)
 
             }
             if(filter2of3)cutoff = data_mem.hot_disp[azi][r_pos]<2;
-            if(cutoff)
-            {
-                data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
+//            if(cutoff)
+//            {
+//                data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
 
-            }else
-            {
-                data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
-            }
+//            }else
+//            {
+//                data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
+//            }
             data_mem.level_disp[azi][r_pos] = cutoff?0:data_mem.level[azi][r_pos];
 
         }
@@ -945,11 +945,11 @@ void C_radar_data::ProcessData(unsigned short azi)
         if(cutoff)
         {
             if(isManualTune&&rgs_auto)data_mem.level_disp[azi][r_pos]= 0;
-            //data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
+            data_mem.sled[azi][r_pos]-= (data_mem.sled[azi][r_pos])/100.0f;
         }
         else
         {
-            //data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
+            data_mem.sled[azi][r_pos] += (255 - data_mem.sled[azi][r_pos])/10.0f;
         }
 
 
